@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {Map} from './Modules/map.jsx';
 
 class MainApp extends React.Component {
     
@@ -7,6 +8,7 @@ class MainApp extends React.Component {
         return (
             <div>
                 Hello World 2000
+                <Map/>
             </div>
         )
     }
