@@ -5,11 +5,21 @@ import {SearchEngine} from './Modules/searchEngine.jsx';
 import {CountryInfo} from './Modules/countryInfo.jsx';
 
 class MainApp extends React.Component {
+    constructor(){
+        super()
+        
+        this.state = {
+            infoToDisplay: "",
+            activeCountry: ""
+        }        
+    }
     
     render(){
         return (
             <div>
+                <SearchEngine/>
                 <Map/>
+                <CountryInfo infoToDisplay={this.state.infoToDisplay}/>
             </div>
         )
     }
@@ -18,9 +28,8 @@ class MainApp extends React.Component {
 document.addEventListener('DOMContentLoaded', function(){
     ReactDOM.render(
         <div>
-            <SearchEngine/>
+            Whatever
             <MainApp/>
-            <CountryInfo/>
         </div>,
         document.getElementById('app')
     );
