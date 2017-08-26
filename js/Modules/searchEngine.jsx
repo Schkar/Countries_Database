@@ -6,7 +6,7 @@ class SearchEngineButton extends React.Component {
 
         this.state = {
             currentResponse: "",
-            query: "usb"
+            searchQuery: "usa"
         }
     }
 
@@ -16,7 +16,7 @@ class SearchEngineButton extends React.Component {
         //     //TODO: Display something somewhere, when props.query is empty.
         //     return;
         // }
-        fetch("https://restcountries.eu/rest/v2/name/"+this.state.query).then( (r) => {
+        fetch("https://restcountries.eu/rest/v2/name/"+this.state.searchQuery).then( (r) => {
             if (r.ok) {
                 return r.json()
             }
@@ -32,7 +32,39 @@ class SearchEngineButton extends React.Component {
 
     render(){
         return(
-            <button className="searchButton" onClick={this.searchStart} value={this.props.text}>{this.props.text}</button>
+            <button className="searchButton normalSearchButton" onClick={this.searchStart} value={this.props.text}>{this.props.text}</button>
+        )
+    }
+}
+
+class LuckySearchEngineButton extends React.Component {
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            currentResponse: "",
+            searchQuery: "usa"
+        }
+    }
+
+    searchStart = () => {
+        fetch("https://restcountries.eu/rest/v2/name/"+this.state.searchQuery).then( (r) => {
+            if (r.ok) {
+                return r.json()
+            }
+            throw new Error("I'm sad now. Go away")
+        })
+        .then( (r) => {
+            console.log(r[0].name);
+        })
+        .catch( (error) => {
+            console.log(error);
+        })
+    }
+
+    render(){
+        return(
+            <button className="searchButton luckySearchButton" onClick={this.searchStart} value={this.props.text}>{this.props.text}</button>
         )
     }
 }
@@ -58,7 +90,7 @@ class SearchEngine extends React.Component{
         super(props)
 
         this.state = {
-
+            searchQuery: ""
         }
     }
 
@@ -71,7 +103,7 @@ class SearchEngine extends React.Component{
             <div className="searchEngine">
                 <SearchEngineBar/>
                 <SearchEngineButton text="Search country"/>
-                <SearchEngineButton text="Feeling lucky?"/>
+                <LuckySearchEngineButton text="Feeling lucky?"/>
             </div>
         )
     }

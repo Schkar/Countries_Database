@@ -10,15 +10,23 @@ class MainApp extends React.Component {
         
         this.state = {
             infoToDisplay: "",
-            activeCountry: ""
+            clickedCountry: ""
         }        
+    }
+
+    mapClick = (e) => {
+        if (e !== null) {
+            this.setState({
+                clickedCountry: e
+            })
+        }
     }
     
     render(){
         return (
             <div>
-                <SearchEngine/>
-                <Map/>
+                <SearchEngine searchQuery={this.state.clickedCountry}/>
+                <Map mapClick={this.mapClick}/>
                 <CountryInfo infoToDisplay={this.state.infoToDisplay}/>
             </div>
         )
