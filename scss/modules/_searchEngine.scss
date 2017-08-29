@@ -1,0 +1,31 @@
+.searchEngine{
+    font-family: "orbitron";
+    .searchBar{
+        width: 50%;
+        height: 50px;
+        font-size: 2em;
+        margin: 20px auto;
+        display: block;
+        font-family: "orbitron";
+    }
+    .buttonWrapper{
+        display: block;
+        width: 500px;
+        margin: 20px auto;
+        text-align: center;
+        .searchButton{
+            background-color: red;
+            font-family: "orbitron";
+            font-size: 1.2em;
+            height: 40px;
+            margin: 0 30px;
+            border: 0;
+            &.luckySearchButton{
+                background-color: rgba(47, 255, 0, 0.40)
+            }
+            &.normalSearchButton{
+    
+            }
+        }
+    }
+}

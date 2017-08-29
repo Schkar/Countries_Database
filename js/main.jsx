@@ -21,11 +21,19 @@ class MainApp extends React.Component {
             })
         }
     }
+
+
+
+    getCountryInfo = (e) => {
+
+    }
     
+
+
     render(){
         return (
             <div>
-                <SearchEngine searchQuery={this.state.clickedCountry}/>
+                <SearchEngine getCountryInfo={this.getCountryInfo} clickedCountry={this.state.clickedCountry}/>
                 <Map mapClick={this.mapClick}/>
                 <CountryInfo infoToDisplay={this.state.infoToDisplay}/>
             </div>
@@ -36,7 +44,6 @@ class MainApp extends React.Component {
 document.addEventListener('DOMContentLoaded', function(){
     ReactDOM.render(
         <div>
-            Whatever
             <MainApp/>
         </div>,
         document.getElementById('app')
