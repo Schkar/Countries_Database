@@ -9793,7 +9793,13 @@ var MainApp = function (_React$Component) {
             }
         };
 
-        _this.getCountryInfo = function (e) {};
+        _this.getCountryInfo = function (e) {
+            if (e !== undefined) {
+                _this.setState({
+                    infoToDisplay: e
+                });
+            }
+        };
 
         _this.state = {
             infoToDisplay: "",
@@ -10334,8 +10340,7 @@ var CountryInfo = function (_React$Component) {
             if (this.props.infoToDisplay === "") {
                 return null;
             }
-            return;
-            _react2.default.createElement(
+            return _react2.default.createElement(
                 "div",
                 { className: "countryInfoWrapper" },
                 _react2.default.createElement(
@@ -10432,20 +10437,20 @@ var SearchEngineButton = function (_React$Component) {
         var _this = _possibleConstructorReturn(this, (SearchEngineButton.__proto__ || Object.getPrototypeOf(SearchEngineButton)).call(this, props));
 
         _this.searchStart = function () {
-            if (_this.state.searchQuery === "") {
-                console.log("query is empty");
-                //TODO: Display something somewhere, when props.query is empty.
-                return;
-            }
+            // if (this.state.searchQuery === "") {
+            //     console.log("query is empty");
+            //     //TODO: Display something somewhere, when props.query is empty.
+            //     return;
+            // }
             fetch("https://restcountries.eu/rest/v2/name/" + _this.state.searchQuery).then(function (r) {
                 if (r.ok) {
                     return r.json();
                 }
                 throw new Error("I'm sad now. Go away");
             }).then(function (r) {
-                _this.state({
-                    currentResponse: r
-                });
+                if (typeof _this.props.getCountryInfo === "function") {
+                    _this.props.getCountryInfo(r[0]);
+                }
             }).catch(function (error) {
                 console.log(error);
             });
@@ -10453,19 +10458,18 @@ var SearchEngineButton = function (_React$Component) {
 
         _this.state = {
             currentResponse: "",
-            searchQuery: ""
+            searchQuery: "usa"
         };
         return _this;
     }
 
+    // shouldComponentUpdate(){
+    //     if (this.props.clickedCountry !== "") {
+    //         this.searchStart()
+    //     }
+    // }
+
     _createClass(SearchEngineButton, [{
-        key: "shouldComponentUpdate",
-        value: function shouldComponentUpdate() {
-            if (this.props.clickedCountry !== "") {
-                this.searchStart();
-            }
-        }
-    }, {
         key: "render",
         value: function render() {
             return _react2.default.createElement(
@@ -10560,7 +10564,11 @@ var SearchEngine = function (_React$Component4) {
             console.log(e);
         };
 
-        _this4.handleClick = function () {};
+        _this4.getCountryInfo = function (resp) {
+            if (typeof _this4.props.getCountryInfo === "function") {
+                _this4.props.getCountryInfo(resp);
+            }
+        };
 
         return _this4;
     }
@@ -10575,8 +10583,8 @@ var SearchEngine = function (_React$Component4) {
                 _react2.default.createElement(
                     "div",
                     { className: "buttonWrapper" },
-                    _react2.default.createElement(SearchEngineButton, { searchQuery: this.props.clickedCountry, clickedCountry: this.props.clickedCountry, text: "Search country" }),
-                    _react2.default.createElement(LuckySearchEngineButton, { text: "Feeling lucky?" })
+                    _react2.default.createElement(SearchEngineButton, { searchQuery: this.props.clickedCountry, clickedCountry: this.props.clickedCountry, getCountryInfo: this.getCountryInfo, text: "Search country" }),
+                    _react2.default.createElement(LuckySearchEngineButton, { getCountryInfo: this.getCountryInfo, text: "Feeling lucky?" })
                 )
             );
         }

@@ -6,22 +6,22 @@ class SearchEngineButton extends React.Component {
 
         this.state = {
             currentResponse: "",
-            searchQuery: ""
+            searchQuery: "usa"
         }
     }
 
-    shouldComponentUpdate(){
-        if (this.props.clickedCountry !== "") {
-            this.searchStart()
-        }
-    }
+    // shouldComponentUpdate(){
+    //     if (this.props.clickedCountry !== "") {
+    //         this.searchStart()
+    //     }
+    // }
 
     searchStart = () =>{
-        if (this.state.searchQuery === "") {
-            console.log("query is empty");
-            //TODO: Display something somewhere, when props.query is empty.
-            return;
-        }
+        // if (this.state.searchQuery === "") {
+        //     console.log("query is empty");
+        //     //TODO: Display something somewhere, when props.query is empty.
+        //     return;
+        // }
         fetch("https://restcountries.eu/rest/v2/name/"+this.state.searchQuery).then( (r) => {
             if (r.ok) {
                 return r.json()
@@ -29,9 +29,9 @@ class SearchEngineButton extends React.Component {
             throw new Error("I'm sad now. Go away")
         })
         .then( (r) => {
-            this.state({
-                currentResponse: r
-            })
+            if (typeof this.props.getCountryInfo === "function") {
+                this.props.getCountryInfo(r[0])
+            }
         })
         .catch( (error) => {
             console.log(error);
@@ -107,8 +107,10 @@ class SearchEngine extends React.Component{
         console.log(e);
     }
 
-    handleClick = () =>{
-
+    getCountryInfo = (resp) =>{
+        if (typeof this.props.getCountryInfo === "function") {
+            this.props.getCountryInfo(resp)
+        }
     }
 
     render() {
@@ -116,8 +118,8 @@ class SearchEngine extends React.Component{
             <div className="searchEngine">
                 <SearchEngineBar getSearchQuery={this.getSearchQuery}/>
                 <div className="buttonWrapper">
-                    <SearchEngineButton searchQuery={this.props.clickedCountry} clickedCountry={this.props.clickedCountry} text="Search country"/>
-                    <LuckySearchEngineButton text="Feeling lucky?"/>
+                    <SearchEngineButton searchQuery={this.props.clickedCountry} clickedCountry={this.props.clickedCountry} getCountryInfo={this.getCountryInfo} text="Search country"/>
+                    <LuckySearchEngineButton getCountryInfo={this.getCountryInfo} text="Feeling lucky?"/>
                 </div>
             </div>
         )

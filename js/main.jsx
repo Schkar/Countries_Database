@@ -25,7 +25,11 @@ class MainApp extends React.Component {
 
 
     getCountryInfo = (e) => {
-
+        if (e !== undefined) {
+            this.setState({
+                infoToDisplay: e
+            })
+        }
     }
     
 
