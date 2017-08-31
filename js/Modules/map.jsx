@@ -1,44 +1,8 @@
 import React from 'react';
 
-class LoadingIcon extends React.Component{
-    constructor(props){
-        super(props)
-
-        this.state = {
-            something: '' 
-        }
-    }
-
-    render(){
-        return(
-            true
-        )
-    }
-}
-
-class LoadingTexts extends React.Component{
-    constructor(props){
-        super(props)
-
-        this.state = {
-            something: '' 
-        }
-    }
-
-    render(){
-        return(
-            true
-        )
-    }
-} 
-
 class Map extends React.Component {
     constructor(props){
         super(props)
-
-        this.state = {
-            loadingStatus: false
-        }
     }
 
     handleMapClick = (e) => {

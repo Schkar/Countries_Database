@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import {Map} from './Modules/map.jsx';
 import {SearchEngine} from './Modules/searchEngine.jsx';
 import {CountryInfo} from './Modules/countryInfo.jsx';
+import {LoadingScreen} from './Modules/loadingPage.jsx';
 
 class MainApp extends React.Component {
     constructor(){
@@ -10,7 +11,8 @@ class MainApp extends React.Component {
         
         this.state = {
             infoToDisplay: "",
-            clickedCountry: ""
+            clickedCountry: "",
+            loadingFinished: false
         }        
     }
 
@@ -22,12 +24,18 @@ class MainApp extends React.Component {
         }
     }
 
-
-
     getCountryInfo = (e) => {
         if (e !== undefined) {
             this.setState({
                 infoToDisplay: e
+            })
+        }
+    }
+
+    checkLoadingStatus = (value) =>{
+        if (value) {
+            this.setState({
+                loadingFinished: value
             })
         }
     }
@@ -37,8 +45,12 @@ class MainApp extends React.Component {
     render(){
         return (
             <div>
+                <p className="welcomeText">Welcome to the most advanced countries database!</p>
+                <p className="welcomeTextSmall">(in this part of the Internet)</p>
                 <SearchEngine getCountryInfo={this.getCountryInfo} clickedCountry={this.state.clickedCountry}/>
                 <Map mapClick={this.mapClick}/>
+                <LoadingScreen checkLoadingStatus={this.checkLoadingStatus}/>
+                {/* {this.state.loadingFinished ?  : } */}
                 <CountryInfo infoToDisplay={this.state.infoToDisplay}/>
             </div>
         )
