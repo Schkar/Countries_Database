@@ -38,26 +38,7 @@ class LoadingTexts extends React.Component{
     }
 
     componentDidMount = () =>{
-        let textPromise = new Promise( (resolve) => {
-            this.setState({
-                currentText: this.state.texts[this.state.currentValue],
-                currentValue: this.state.currentValue + 1
-            })
-            setTimeout(function(){
-                resolve()
-            },4000)
-        })
-        .then( () => {
-            return new Promise( (resolve) => {
-                this.setState({
-                    currentText: this.state.texts[this.state.currentValue],
-                    currentValue: this.state.currentValue + 1
-                })
-                setTimeout(function(){
-                    resolve()
-                },4000)
-            })
-        })
+        this.textLoad()
     }
 
     textLoad = () =>{
@@ -67,6 +48,8 @@ class LoadingTexts extends React.Component{
             }
             return;
         }
+        let random = this.state.currentText.length * 100 + (Math.random() * 1000 - 500) + 500;
+        console.log(random);
         return new Promise( (resolve) => {
             this.setState({
                 currentText: this.state.texts[this.state.currentValue],
@@ -74,9 +57,8 @@ class LoadingTexts extends React.Component{
             })
             setTimeout(function(){
                 resolve()
-            },this.state.currentText.length * 10 + (Math.random() * 2000 - 500) + 500)
-        })
-         
+            },random)
+        }).then(this.textLoad)
     }
 
     render(){

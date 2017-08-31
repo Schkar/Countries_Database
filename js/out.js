@@ -23305,25 +23305,7 @@ var LoadingTexts = function (_React$Component2) {
         var _this2 = _possibleConstructorReturn(this, (LoadingTexts.__proto__ || Object.getPrototypeOf(LoadingTexts)).call(this, props));
 
         _this2.componentDidMount = function () {
-            var textPromise = new Promise(function (resolve) {
-                _this2.setState({
-                    currentText: _this2.state.texts[_this2.state.currentValue],
-                    currentValue: _this2.state.currentValue + 1
-                });
-                setTimeout(function () {
-                    resolve();
-                }, 4000);
-            }).then(function () {
-                return new Promise(function (resolve) {
-                    _this2.setState({
-                        currentText: _this2.state.texts[_this2.state.currentValue],
-                        currentValue: _this2.state.currentValue + 1
-                    });
-                    setTimeout(function () {
-                        resolve();
-                    }, 4000);
-                });
-            });
+            _this2.textLoad();
         };
 
         _this2.textLoad = function () {
@@ -23333,6 +23315,8 @@ var LoadingTexts = function (_React$Component2) {
                 }
                 return;
             }
+            var random = _this2.state.currentText.length * 100 + (Math.random() * 1000 - 500) + 500;
+            console.log(random);
             return new Promise(function (resolve) {
                 _this2.setState({
                     currentText: _this2.state.texts[_this2.state.currentValue],
@@ -23340,8 +23324,8 @@ var LoadingTexts = function (_React$Component2) {
                 });
                 setTimeout(function () {
                     resolve();
-                }, _this2.state.currentText.length * 10 + (Math.random() * 2000 - 500) + 500);
-            });
+                }, random);
+            }).then(_this2.textLoad);
         };
 
         _this2.state = {
