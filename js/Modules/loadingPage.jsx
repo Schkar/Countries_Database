@@ -62,7 +62,7 @@ class LoadingTexts extends React.Component{
 
     render(){
         return(
-            <p className="currentText">{this.state.currentText}</p> 
+            <p className="loadingText">{this.state.currentText}</p> 
         )
     }
 }
@@ -80,7 +80,7 @@ class LoadingScreen extends React.Component{
 
     render(){
         return(
-            <div>
+            <div className="loadingScreen">
                 <LoadingIcon/>
                 <LoadingTexts checkLoadingStatus={this.checkLoadingStatus}/> 
             </div>

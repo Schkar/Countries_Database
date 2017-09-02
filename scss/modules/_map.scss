@@ -1,9 +1,17 @@
 .mapWrapper{
-    margin: 0 auto;
-    width: 90%;
-    text-align: center;    
+    margin: 20px;
+    text-align: center;
+    display: inline-block;
+    position: relative;
+    left: 50%;
+    transform: translate(-50%,0);
+    transition: left 1s;
+    &.countryInfoActive{
+        left: 0;
+        transform: translate(0,0);
+        transition: left 1s;
+    }
     .map{
-        border: 1px solid red;
         width: 1024px;
         height: 700px;
         .land{

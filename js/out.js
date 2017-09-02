@@ -10509,7 +10509,7 @@ var LoadingTexts = function (_React$Component2) {
         value: function render() {
             return _react2.default.createElement(
                 'p',
-                { className: 'currentText' },
+                { className: 'loadingText' },
                 this.state.currentText
             );
         }
@@ -10540,7 +10540,7 @@ var LoadingScreen = function (_React$Component3) {
         value: function render() {
             return _react2.default.createElement(
                 'div',
-                null,
+                { className: 'loadingScreen' },
                 _react2.default.createElement(LoadingIcon, null),
                 _react2.default.createElement(LoadingTexts, { checkLoadingStatus: this.checkLoadingStatus })
             );
