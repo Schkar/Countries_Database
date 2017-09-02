@@ -1,15 +1,21 @@
-.map{
-    border: 1px solid red;
-    width: 1024px;
-    height: 700px;
-    .land{
-        fill: #CCCCCC;
-        fill-opacity: 1;
-        stroke:white;
-        stroke-opacity: 1;
-        stroke-width:0.5;
-        &:hover{
-            fill: #20008D;
+.mapWrapper{
+    margin: 0 auto;
+    width: 90%;
+    text-align: center;    
+    .map{
+        border: 1px solid red;
+        width: 1024px;
+        height: 700px;
+        .land{
+            fill: #CCCCCC;
+            fill-opacity: 1;
+            stroke:white;
+            stroke-opacity: 1;
+            stroke-width:0.5;
+            &:hover{
+                fill: #20008D;
+            }
         }
     }
 }
+

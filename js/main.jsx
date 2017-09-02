@@ -45,8 +45,10 @@ class MainApp extends React.Component {
     render(){
         return (
             <div>
-                <p className="welcomeText">Welcome to the most advanced countries database!</p>
-                <p className="welcomeTextSmall">(in this part of the Internet)</p>
+                <div className="welcomeTextWrapper">
+                    <p className="welcomeText">Welcome to the most advanced countries database!</p>
+                    <p className="welcomeTextSmall">(in this part of the Internet)</p>
+                </div>
                 <SearchEngine getCountryInfo={this.getCountryInfo} clickedCountry={this.state.clickedCountry}/>
                 <Map mapClick={this.mapClick}/>
                 <LoadingScreen checkLoadingStatus={this.checkLoadingStatus}/>
