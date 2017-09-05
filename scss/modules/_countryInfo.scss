@@ -1,8 +1,14 @@
 .countryInfoWrapper{
-    border: 2px solid red;
+    //border: 2px solid red;
+    display: inline-block;
+    font-size: 1.5em;
+    margin-left: 100px;
+    position: relative;
+    top: -200px;
+    left: 0;
     
     .countryInfoText{
-        border: 2px solid red;
+        //border: 2px solid red;
         &.name{
 
         }
@@ -22,7 +28,8 @@
             
         }
         &.flag{
-            
+            width: 100px;
+            height: 50px;
         }
     }
 }

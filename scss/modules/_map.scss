@@ -7,8 +7,7 @@
     transform: translate(-50%,0);
     transition: left 1s;
     &.countryInfoActive{
-        left: 0;
-        transform: translate(0,0);
+        left: 30%;
         transition: left 1s;
     }
     .map{

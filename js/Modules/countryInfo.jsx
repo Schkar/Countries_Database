@@ -17,7 +17,7 @@ class CountryInfo extends React.Component{
                 <p className="countryInfoText population">Population: {this.props.infoToDisplay.population}</p>    
                 <p className="countryInfoText currency">Currency: {this.props.infoToDisplay.currencies.name}</p>    
                 <p className="countryInfoText language">Language: {this.props.infoToDisplay.languages.name}</p>    
-                <p className="countryInfoText flag">Flag: <img src={this.props.infoToDisplay.flag} alt={this.props.infoToDisplay.name & "flag"}></img></p>    
+                <p className="countryInfoText">Flag: <img className="countryInfoText flag" src={this.props.infoToDisplay.flag} alt={this.props.infoToDisplay.name & "flag"}></img></p>
             </div>
         )
     }

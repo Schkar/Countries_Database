@@ -48,7 +48,8 @@ class LoadingTexts extends React.Component{
             }
             return;
         }
-        let random = this.state.currentText.length * 100 + (Math.random() * 1000 - 500) + 500;
+        //let random = this.state.currentText.length * 100 + (Math.random() * 1000 - 500) + 500;
+        let random = 100                  
         return new Promise( (resolve) => {
             this.setState({
                 currentText: this.state.texts[this.state.currentValue],

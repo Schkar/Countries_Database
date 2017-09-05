@@ -12,7 +12,8 @@ class MainApp extends React.Component {
         this.state = {
             infoToDisplay: "",
             clickedCountry: "",
-            loadingFinished: false
+            loadingFinished: false,
+            countryInfoActive: false
         }        
     }
 
@@ -27,8 +28,10 @@ class MainApp extends React.Component {
     getCountryInfo = (e) => {
         if (e !== undefined) {
             this.setState({
-                infoToDisplay: e
+                infoToDisplay: e,
+                countryInfoActive: true
             })
+
         }
     }
 
@@ -50,10 +53,8 @@ class MainApp extends React.Component {
                     <p className="welcomeTextSmall">(in this part of the Internet)</p>
                 </div>
                 <SearchEngine getCountryInfo={this.getCountryInfo} clickedCountry={this.state.clickedCountry}/>
-                <Map mapClick={this.mapClick}/>
-                <LoadingScreen checkLoadingStatus={this.checkLoadingStatus}/>
-                {/* {this.state.loadingFinished ?  : } */}
-                <CountryInfo infoToDisplay={this.state.infoToDisplay}/>
+                {this.state.loadingFinished ? <Map countryInfoActive={this.state.countryInfoActive} mapClick={this.mapClick}/> : <LoadingScreen checkLoadingStatus={this.checkLoadingStatus}/>}
+                {this.state.infoToDisplay !== "" ? <CountryInfo infoToDisplay={this.state.infoToDisplay}/> : null}
             </div>
         )
     }
