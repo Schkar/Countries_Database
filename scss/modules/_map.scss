@@ -5,10 +5,10 @@
     position: relative;
     left: 50%;
     transform: translate(-50%,0);
-    transition: left 1s;
+    transition: left ease-in-out 2s;
     &.countryInfoActive{
         left: 30%;
-        transition: left 1s;
+        transition: left ease-in-out 2s;
     }
     .map{
         width: 1024px;
@@ -21,6 +21,10 @@
             stroke-width:0.5;
             &:hover{
                 fill: #20008D;
+            }
+            &.activeCountry{
+                fill: #FE0003;
+                transition: fill 1s;
             }
         }
     }

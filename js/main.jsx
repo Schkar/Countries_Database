@@ -29,7 +29,8 @@ class MainApp extends React.Component {
         if (e !== undefined) {
             this.setState({
                 infoToDisplay: e,
-                countryInfoActive: true
+                countryInfoActive: true,
+                countryToShow: e.alpha2Code
             })
 
         }
@@ -53,7 +54,7 @@ class MainApp extends React.Component {
                     <p className="welcomeTextSmall">(in this part of the Internet)</p>
                 </div>
                 <SearchEngine getCountryInfo={this.getCountryInfo} clickedCountry={this.state.clickedCountry}/>
-                {this.state.loadingFinished ? <Map countryInfoActive={this.state.countryInfoActive} mapClick={this.mapClick}/> : <LoadingScreen checkLoadingStatus={this.checkLoadingStatus}/>}
+                {this.state.loadingFinished ? <Map countryToShow={this.state.countryToShow} countryInfoActive={this.state.countryInfoActive} mapClick={this.mapClick}/> : <LoadingScreen checkLoadingStatus={this.checkLoadingStatus}/>}
                 {this.state.infoToDisplay !== "" ? <CountryInfo infoToDisplay={this.state.infoToDisplay}/> : null}
             </div>
         )
