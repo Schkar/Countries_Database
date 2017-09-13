@@ -10608,7 +10608,7 @@ var SearchEngineButton = function (_React$Component) {
             // }
             var countryToSearch = _this.props.currentSearchQuery;
             console.log(countryToSearch, _this.props.currentSearchQuery);
-            console.log(event);
+            console.log(event.target);
             // if (event !== "") {
             //     countryToSearch = event;
             // }
@@ -10717,13 +10717,15 @@ var SearchEngineBar = function (_React$Component3) {
             }
         };
 
+        _this3.handleEnter = function () {};
+
         return _this3;
     }
 
     _createClass(SearchEngineBar, [{
         key: "render",
         value: function render() {
-            return _react2.default.createElement("input", { onChange: this.handleSearchQuery, className: "searchBar", type: "text", placeholder: "Type a country name here!" });
+            return _react2.default.createElement("input", { onKeyDown: this.handleEnter, onChange: this.handleSearchQuery, className: "searchBar", type: "text", placeholder: "Type a country name here!" });
         }
     }]);
 
@@ -10738,6 +10740,12 @@ var SearchEngine = function (_React$Component4) {
 
         var _this4 = _possibleConstructorReturn(this, (SearchEngine.__proto__ || Object.getPrototypeOf(SearchEngine)).call(this, props));
 
+        _this4.getKeyPressed = function () {
+            _this4.setState({
+                keyPressed: e
+            });
+        };
+
         _this4.getSearchQuery = function (e) {
             _this4.setState({
                 currentSearchQuery: e
@@ -10751,7 +10759,8 @@ var SearchEngine = function (_React$Component4) {
         };
 
         _this4.state = {
-            currentSearchQuery: ""
+            currentSearchQuery: "",
+            keyPressed: ""
         };
         return _this4;
     }

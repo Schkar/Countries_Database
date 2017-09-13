@@ -26,7 +26,7 @@ class SearchEngineButton extends React.Component {
         // }
         let countryToSearch = this.props.currentSearchQuery;
         console.log(countryToSearch, this.props.currentSearchQuery);
-        console.log(event);
+        console.log(event.target);
         // if (event !== "") {
         //     countryToSearch = event;
         // }
@@ -106,20 +106,37 @@ class SearchEngineBar extends React.Component{
         }
     }
 
+    handleEnter = (event) =>{
+        if (typeof this.props.getKeyPressed === "function") {
+            if (event.keyCode === 13){
+                this.props.getKeyPressed(true)
+            }
+        }
+    }
+    
+
     render(){
         return(
-            <input onChange={this.handleSearchQuery} className="searchBar" type="text" placeholder="Type a country name here!"/>
+            <input onKeyDown={this.handleEnter} onChange={this.handleSearchQuery} className="searchBar" type="text" placeholder="Type a country name here!"/>
         )
     }
 }
+
 
 class SearchEngine extends React.Component{
     constructor(props){
         super(props)
 
         this.state = {
-            currentSearchQuery: ""
+            currentSearchQuery: "",
+            enterPressed: false
         }
+    }
+
+    getKeyPressed = (arg) => {
+        this.setState({
+            enterPressed: arg
+        })
     }
 
     getSearchQuery = (e) =>{
@@ -138,9 +155,9 @@ class SearchEngine extends React.Component{
         console.log(this.state.currentSearchQuery);
         return(
             <div className="searchEngine">
-                <SearchEngineBar getSearchQuery={this.getSearchQuery}/>
+                <SearchEngineBar keyPressed={this.getKeyPressed} getSearchQuery={this.getSearchQuery}/>
                 <div className="buttonWrapper">
-                    <SearchEngineButton currentSearchQuery={this.state.currentSearchQuery} searchQuery={this.props.clickedCountry} clickedCountry={this.props.clickedCountry} getCountryInfo={this.getCountryInfo} text="Search country"/>
+                    <SearchEngineButton enterPressed={this.state.enterPressed} currentSearchQuery={this.state.currentSearchQuery} searchQuery={this.props.clickedCountry} clickedCountry={this.props.clickedCountry} getCountryInfo={this.getCountryInfo} text="Search country"/>
                     <LuckySearchEngineButton getCountryInfo={this.getCountryInfo} text="Feeling lucky?"/>
                 </div>
             </div>
