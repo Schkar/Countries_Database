@@ -10494,9 +10494,9 @@ var LoadingTexts = function (_React$Component2) {
                 }
                 return;
             }
-            //let random = this.state.currentText.length * 100 + (Math.random() * 1000 - 500) + 500;
+            var random = _this2.state.currentText.length * 100 + (Math.random() * 1000 - 500) + 500;
             //TODO: Uncomment Above, remove below
-            var random = 100;
+            //let random = 100                  
             return new Promise(function (resolve) {
                 _this2.setState({
                     currentText: _this2.state.texts[_this2.state.currentValue],
