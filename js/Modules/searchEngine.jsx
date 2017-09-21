@@ -4,53 +4,17 @@ class SearchEngineButton extends React.Component {
     constructor(props) {
         super(props)
 
-        this.state = {
-            currentResponse: "",
-            searchQuery: ""
-        }
     }
 
-    // shouldComponentUpdate(){
-    //     if (this.props.clickedCountry !== "") {
-    //         this.searchStart(this.props.clickedCountry)
-    //         return true;
-    //     }
-    //     return false;
-    // }
-
-    searchStart = (event) =>{
-        // if (this.state.searchQuery === "") {
-        //     console.log("query is empty");
-        //     //TODO: Display something somewhere, when props.query is empty.
-        //     return;
-        // }
-        let countryToSearch = this.props.currentSearchQuery;
-        console.log(countryToSearch, this.props.currentSearchQuery);
-        console.log(event.target);
-        // if (event !== "") {
-        //     countryToSearch = event;
-        // }
-        
-        fetch("https://restcountries.eu/rest/v2/name/"+countryToSearch).then( (r) => {
-            //TODO: Change above state to props and remove searchQuery from state. Not needed
-            if (r.ok) {
-                return r.json()
-            }
-            throw new Error("I'm sad now. Go away")
-        })
-        .then( (r) => {
-            if (typeof this.props.getCountryInfo === "function") {
-                this.props.getCountryInfo(r[0])
-            }
-        })
-        .catch( (error) => {
-            console.log(error);
-        })
+    handleSearchStart = () => {
+        if (typeof this.props.searchStart === "function") {
+            this.props.searchStart();
+        }
     }
 
     render(){
         return(
-            <button className="searchButton normalSearchButton" onKeyPress={this.searchStart} onClick={this.searchStart} value={this.props.text}>{this.props.text}</button>
+            <button className="searchButton normalSearchButton" onClick={this.handleSearchStart} value={this.props.text}>{this.props.text}</button>
         )
     }
 }
@@ -68,24 +32,13 @@ class LuckySearchEngineButton extends React.Component {
     }
 
     searchStart = () => {
-        let randomCountryNumber = Math.abs(Math.round(Math.random() * (0 - this.state.countries.length - 1) + 0)*100/100);
-        let searchQuery = this.state.countries[randomCountryNumber]
-
-        fetch("https://restcountries.eu/rest/v2/name/"+searchQuery).then( (r) => {
-            if (r.ok) {
-                return r.json()
-            }
-            throw new Error("I'm sad now. Go away")
-        })
-        .then( (r) => {
-            if (typeof this.props.getCountryInfo === "function") {
-                this.props.getCountryInfo(r[0])
-            }
-        })
-        .catch( (error) => {
-            console.log(error);
-        })
+        if (typeof this.props.searchStart === "function") {
+            let randomCountryNumber = Math.abs(Math.round(Math.random() * (0 - this.state.countries.length - 1) + 0)*100/100);
+            let searchQuery = this.state.countries[randomCountryNumber];
+            this.props.searchStart(searchQuery);
+        }
     }
+
 
     render(){
         return(
@@ -100,28 +53,30 @@ class SearchEngineBar extends React.Component{
 
     }
 
+    clearBar = (event) => {
+        event.target.value = ""
+    }
+
     handleSearchQuery = (event) => {
         if (typeof this.props.getSearchQuery === "function") {
-            this.props.getSearchQuery(event.target.value)
+            this.props.getSearchQuery(event.target.value);
         }
     }
 
     handleEnter = (event) =>{
-        if (typeof this.props.getKeyPressed === "function") {
-            if (event.keyCode === 13){
-                this.props.getKeyPressed(true)
+        if (event.key === "Enter") {
+            if (typeof this.props.searchStart) {
+                this.props.searchStart(event.target.value);
             }
         }
-    }
-    
+    }    
 
     render(){
         return(
-            <input onKeyDown={this.handleEnter} onChange={this.handleSearchQuery} className="searchBar" type="text" placeholder="Type a country name here!"/>
+            <input onKeyPress={this.handleEnter} onChange={this.handleSearchQuery} onClick={this.clearBar} className="searchBar" type="text" placeholder="Type a country name here!"/>
         )
     }
 }
-
 
 class SearchEngine extends React.Component{
     constructor(props){
@@ -129,13 +84,47 @@ class SearchEngine extends React.Component{
 
         this.state = {
             currentSearchQuery: "",
-            enterPressed: false
         }
     }
 
-    getKeyPressed = (arg) => {
-        this.setState({
-            enterPressed: arg
+    shouldComponentUpdate = (nextProps) =>{
+        //FIXME: doubles the query - needs repairs
+        if (nextProps.clickedCountry !== "" && nextProps.clickedCountry !== undefined) {
+            this.searchStart(nextProps.clickedCountry);
+            return true;
+        }
+        return false;
+    }
+
+    searchStart = (query) => {
+        let currentQuery = query;
+        if (currentQuery === undefined) {
+            if (this.state.currentSearchQuery !== "") {
+                currentQuery = this.state.currentSearchQuery;
+            }
+        }
+        // if (this.state.searchQuery === "") {
+        //     console.log("query is empty");
+        //     //TODO: Display something somewhere, when props.query is empty.
+        //     return;
+        // }
+        fetch("https://restcountries.eu/rest/v2/name/"+currentQuery).then( (r) => {
+            if (r.ok) {
+                return r.json()
+            }
+            throw new Error("I'm sad now. Go away")
+        })
+        .then( (r) => {
+            if (typeof this.props.getCountryInfo === "function" && typeof this.props.clearClickedCountry === "function") {
+                this.props.getCountryInfo(r[0])
+                this.props.clearClickedCountry()
+                this.setState({
+                    currentSearchQuery: ""
+                })
+            }
+        })
+        .catch( (error) => {
+            console.log(error);
         })
     }
 
@@ -145,20 +134,13 @@ class SearchEngine extends React.Component{
         })
     }
 
-    getCountryInfo = (resp) =>{
-        if (typeof this.props.getCountryInfo === "function") {
-            this.props.getCountryInfo(resp)
-        }
-    }
-
     render() {
-        console.log(this.state.currentSearchQuery);
         return(
             <div className="searchEngine">
-                <SearchEngineBar keyPressed={this.getKeyPressed} getSearchQuery={this.getSearchQuery}/>
+                <SearchEngineBar searchStart={this.searchStart} getSearchQuery={this.getSearchQuery}/>
                 <div className="buttonWrapper">
-                    <SearchEngineButton enterPressed={this.state.enterPressed} currentSearchQuery={this.state.currentSearchQuery} searchQuery={this.props.clickedCountry} clickedCountry={this.props.clickedCountry} getCountryInfo={this.getCountryInfo} text="Search country"/>
-                    <LuckySearchEngineButton getCountryInfo={this.getCountryInfo} text="Feeling lucky?"/>
+                    <SearchEngineButton searchStart={this.searchStart} text="Search country"/>
+                    <LuckySearchEngineButton searchStart={this.searchStart} text="Feeling lucky?"/>
                 </div>
             </div>
         )

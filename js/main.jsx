@@ -36,6 +36,12 @@ class MainApp extends React.Component {
         }
     }
 
+    clearClickedCountry = () =>{
+        this.setState({
+            clickedCountry: ""
+        })
+    }
+
     checkLoadingStatus = (value) =>{
         if (value) {
             this.setState({
@@ -53,7 +59,7 @@ class MainApp extends React.Component {
                     <p className="welcomeText">Welcome to the most advanced countries database!</p>
                     <p className="welcomeTextSmall">(in this part of the Internet)</p>
                 </div>
-                <SearchEngine getCountryInfo={this.getCountryInfo} clickedCountry={this.state.clickedCountry}/>
+                <SearchEngine getCountryInfo={this.getCountryInfo} clickedCountry={this.state.clickedCountry} clearClickedCountry={this.clearClickedCountry}/>
                 {this.state.loadingFinished ? <Map countryToShow={this.state.countryToShow} countryInfoActive={this.state.countryInfoActive} mapClick={this.mapClick}/> : <LoadingScreen checkLoadingStatus={this.checkLoadingStatus}/>}
                 {this.state.infoToDisplay !== "" ? <CountryInfo infoToDisplay={this.state.infoToDisplay}/> : null}
             </div>

@@ -9805,6 +9805,12 @@ var MainApp = function (_React$Component) {
             }
         };
 
+        _this.clearClickedCountry = function () {
+            _this.setState({
+                clickedCountry: ""
+            });
+        };
+
         _this.checkLoadingStatus = function (value) {
             if (value) {
                 _this.setState({
@@ -9842,7 +9848,7 @@ var MainApp = function (_React$Component) {
                         '(in this part of the Internet)'
                     )
                 ),
-                _react2.default.createElement(_searchEngine.SearchEngine, { getCountryInfo: this.getCountryInfo, clickedCountry: this.state.clickedCountry }),
+                _react2.default.createElement(_searchEngine.SearchEngine, { getCountryInfo: this.getCountryInfo, clickedCountry: this.state.clickedCountry, clearClickedCountry: this.clearClickedCountry }),
                 this.state.loadingFinished ? _react2.default.createElement(_map.Map, { countryToShow: this.state.countryToShow, countryInfoActive: this.state.countryInfoActive, mapClick: this.mapClick }) : _react2.default.createElement(_loadingPage.LoadingScreen, { checkLoadingStatus: this.checkLoadingStatus }),
                 this.state.infoToDisplay !== "" ? _react2.default.createElement(_countryInfo.CountryInfo, { infoToDisplay: this.state.infoToDisplay }) : null
             );
@@ -10578,6 +10584,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.SearchEngine = undefined;
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = __webpack_require__(24);
@@ -10600,55 +10608,21 @@ var SearchEngineButton = function (_React$Component) {
 
         var _this = _possibleConstructorReturn(this, (SearchEngineButton.__proto__ || Object.getPrototypeOf(SearchEngineButton)).call(this, props));
 
-        _this.searchStart = function (event) {
-            // if (this.state.searchQuery === "") {
-            //     console.log("query is empty");
-            //     //TODO: Display something somewhere, when props.query is empty.
-            //     return;
-            // }
-            var countryToSearch = _this.props.currentSearchQuery;
-            console.log(countryToSearch, _this.props.currentSearchQuery);
-            console.log(event.target);
-            // if (event !== "") {
-            //     countryToSearch = event;
-            // }
-
-            fetch("https://restcountries.eu/rest/v2/name/" + countryToSearch).then(function (r) {
-                //TODO: Change above state to props and remove searchQuery from state. Not needed
-                if (r.ok) {
-                    return r.json();
-                }
-                throw new Error("I'm sad now. Go away");
-            }).then(function (r) {
-                if (typeof _this.props.getCountryInfo === "function") {
-                    _this.props.getCountryInfo(r[0]);
-                }
-            }).catch(function (error) {
-                console.log(error);
-            });
+        _this.handleSearchStart = function () {
+            if (typeof _this.props.searchStart === "function") {
+                _this.props.searchStart();
+            }
         };
 
-        _this.state = {
-            currentResponse: "",
-            searchQuery: ""
-        };
         return _this;
     }
-
-    // shouldComponentUpdate(){
-    //     if (this.props.clickedCountry !== "") {
-    //         this.searchStart(this.props.clickedCountry)
-    //         return true;
-    //     }
-    //     return false;
-    // }
 
     _createClass(SearchEngineButton, [{
         key: "render",
         value: function render() {
             return _react2.default.createElement(
                 "button",
-                { className: "searchButton normalSearchButton", onKeyPress: this.searchStart, onClick: this.searchStart, value: this.props.text },
+                { className: "searchButton normalSearchButton", onClick: this.handleSearchStart, value: this.props.text },
                 this.props.text
             );
         }
@@ -10666,21 +10640,11 @@ var LuckySearchEngineButton = function (_React$Component2) {
         var _this2 = _possibleConstructorReturn(this, (LuckySearchEngineButton.__proto__ || Object.getPrototypeOf(LuckySearchEngineButton)).call(this, props));
 
         _this2.searchStart = function () {
-            var randomCountryNumber = Math.abs(Math.round(Math.random() * (0 - _this2.state.countries.length - 1) + 0) * 100 / 100);
-            var searchQuery = _this2.state.countries[randomCountryNumber];
-
-            fetch("https://restcountries.eu/rest/v2/name/" + searchQuery).then(function (r) {
-                if (r.ok) {
-                    return r.json();
-                }
-                throw new Error("I'm sad now. Go away");
-            }).then(function (r) {
-                if (typeof _this2.props.getCountryInfo === "function") {
-                    _this2.props.getCountryInfo(r[0]);
-                }
-            }).catch(function (error) {
-                console.log(error);
-            });
+            if (typeof _this2.props.searchStart === "function") {
+                var randomCountryNumber = Math.abs(Math.round(Math.random() * (0 - _this2.state.countries.length - 1) + 0) * 100 / 100);
+                var searchQuery = _this2.state.countries[randomCountryNumber];
+                _this2.props.searchStart(searchQuery);
+            }
         };
 
         _this2.state = {
@@ -10711,13 +10675,23 @@ var SearchEngineBar = function (_React$Component3) {
 
         var _this3 = _possibleConstructorReturn(this, (SearchEngineBar.__proto__ || Object.getPrototypeOf(SearchEngineBar)).call(this, props));
 
+        _this3.clearBar = function (event) {
+            event.target.value = "";
+        };
+
         _this3.handleSearchQuery = function (event) {
             if (typeof _this3.props.getSearchQuery === "function") {
                 _this3.props.getSearchQuery(event.target.value);
             }
         };
 
-        _this3.handleEnter = function () {};
+        _this3.handleEnter = function (event) {
+            if (event.key === "Enter") {
+                if (_typeof(_this3.props.searchStart)) {
+                    _this3.props.searchStart(event.target.value);
+                }
+            }
+        };
 
         return _this3;
     }
@@ -10725,7 +10699,7 @@ var SearchEngineBar = function (_React$Component3) {
     _createClass(SearchEngineBar, [{
         key: "render",
         value: function render() {
-            return _react2.default.createElement("input", { onKeyDown: this.handleEnter, onChange: this.handleSearchQuery, className: "searchBar", type: "text", placeholder: "Type a country name here!" });
+            return _react2.default.createElement("input", { onKeyPress: this.handleEnter, onChange: this.handleSearchQuery, onClick: this.clearBar, className: "searchBar", type: "text", placeholder: "Type a country name here!" });
         }
     }]);
 
@@ -10740,9 +10714,42 @@ var SearchEngine = function (_React$Component4) {
 
         var _this4 = _possibleConstructorReturn(this, (SearchEngine.__proto__ || Object.getPrototypeOf(SearchEngine)).call(this, props));
 
-        _this4.getKeyPressed = function () {
-            _this4.setState({
-                keyPressed: e
+        _this4.shouldComponentUpdate = function (nextProps) {
+            //FIXME: doubles the query - needs repairs
+            if (nextProps.clickedCountry !== "" && nextProps.clickedCountry !== undefined) {
+                _this4.searchStart(nextProps.clickedCountry);
+                return true;
+            }
+            return false;
+        };
+
+        _this4.searchStart = function (query) {
+            var currentQuery = query;
+            if (currentQuery === undefined) {
+                if (_this4.state.currentSearchQuery !== "") {
+                    currentQuery = _this4.state.currentSearchQuery;
+                }
+            }
+            // if (this.state.searchQuery === "") {
+            //     console.log("query is empty");
+            //     //TODO: Display something somewhere, when props.query is empty.
+            //     return;
+            // }
+            fetch("https://restcountries.eu/rest/v2/name/" + currentQuery).then(function (r) {
+                if (r.ok) {
+                    return r.json();
+                }
+                throw new Error("I'm sad now. Go away");
+            }).then(function (r) {
+                if (typeof _this4.props.getCountryInfo === "function" && typeof _this4.props.clearClickedCountry === "function") {
+                    _this4.props.getCountryInfo(r[0]);
+                    _this4.props.clearClickedCountry();
+                    _this4.setState({
+                        currentSearchQuery: ""
+                    });
+                }
+            }).catch(function (error) {
+                console.log(error);
             });
         };
 
@@ -10752,15 +10759,8 @@ var SearchEngine = function (_React$Component4) {
             });
         };
 
-        _this4.getCountryInfo = function (resp) {
-            if (typeof _this4.props.getCountryInfo === "function") {
-                _this4.props.getCountryInfo(resp);
-            }
-        };
-
         _this4.state = {
-            currentSearchQuery: "",
-            keyPressed: ""
+            currentSearchQuery: ""
         };
         return _this4;
     }
@@ -10768,16 +10768,15 @@ var SearchEngine = function (_React$Component4) {
     _createClass(SearchEngine, [{
         key: "render",
         value: function render() {
-            console.log(this.state.currentSearchQuery);
             return _react2.default.createElement(
                 "div",
                 { className: "searchEngine" },
-                _react2.default.createElement(SearchEngineBar, { getSearchQuery: this.getSearchQuery }),
+                _react2.default.createElement(SearchEngineBar, { searchStart: this.searchStart, getSearchQuery: this.getSearchQuery }),
                 _react2.default.createElement(
                     "div",
                     { className: "buttonWrapper" },
-                    _react2.default.createElement(SearchEngineButton, { currentSearchQuery: this.state.currentSearchQuery, searchQuery: this.props.clickedCountry, clickedCountry: this.props.clickedCountry, getCountryInfo: this.getCountryInfo, text: "Search country" }),
-                    _react2.default.createElement(LuckySearchEngineButton, { getCountryInfo: this.getCountryInfo, text: "Feeling lucky?" })
+                    _react2.default.createElement(SearchEngineButton, { searchStart: this.searchStart, text: "Search country" }),
+                    _react2.default.createElement(LuckySearchEngineButton, { searchStart: this.searchStart, text: "Feeling lucky?" })
                 )
             );
         }
