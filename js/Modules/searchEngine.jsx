@@ -87,13 +87,8 @@ class SearchEngine extends React.Component{
         }
     }
 
-    shouldComponentUpdate = (nextProps) =>{
-        //FIXME: doubles the query - needs repairs
-        if (nextProps.clickedCountry !== "" && nextProps.clickedCountry !== undefined) {
-            this.searchStart(nextProps.clickedCountry);
-            return true;
-        }
-        return false;
+    componentDidUpdate = () => {
+            this.searchStart(this.props.clickedCountry)
     }
 
     searchStart = (query) => {
@@ -103,7 +98,7 @@ class SearchEngine extends React.Component{
                 currentQuery = this.state.currentSearchQuery;
             }
         }
-        // if (this.state.searchQuery === "") {
+        // if (currentQuery === "" || currentQuery === undefined) {
         //     console.log("query is empty");
         //     //TODO: Display something somewhere, when props.query is empty.
         //     return;

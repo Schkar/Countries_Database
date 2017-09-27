@@ -1,0 +1,22 @@
+.instructionsWrapper{
+    text-align: center;
+    width: 960px;
+    margin: 0 auto;
+    height: 50px;
+    overflow: hidden;
+    transition: height 1s;
+    display: block;
+    background-color: lighten(blue,15%);
+    color: white;
+    &.open{
+        height: 220px;
+        transition: height 1s;
+    }
+    .instructionsTitle{
+        margin-top: 10px;
+        cursor: pointer;
+    }
+    .instructionsTextWrapper{
+        font-size: 1.3em;
+    }
+}

@@ -279,8 +279,10 @@ class Map extends React.Component {
         return(
             
         //(c) ammap.com | SVG map of World High
+        //TODO: Width, height needs a media query
         <div className={currentClass}>
-            <svg onClick={this.handleMapClick} className="map">
+            
+            <svg onClick={this.handleMapClick} className="map" width="1000" height="500" viewBox="0 0 1024 700">
                 <g>
                     {this.state.countriesPaths.map( (e) =>{
                         let classToGive = (e.id === this.props.countryToShow ? e.className + " activeCountry" : e.className )

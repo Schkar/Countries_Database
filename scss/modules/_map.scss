@@ -11,9 +11,8 @@
         transition: left ease-in-out 2s;
     }
     .map{
-        width: 1024px;
-        height: 700px;
         .land{
+            cursor: pointer;
             fill: #CCCCCC;
             fill-opacity: 1;
             stroke:white;

@@ -4,6 +4,7 @@ import {Map} from './Modules/map.jsx';
 import {SearchEngine} from './Modules/searchEngine.jsx';
 import {CountryInfo} from './Modules/countryInfo.jsx';
 import {LoadingScreen} from './Modules/loadingPage.jsx';
+import {Instructions} from './Modules/instructions.jsx';
 
 class MainApp extends React.Component {
     constructor(){
@@ -60,6 +61,7 @@ class MainApp extends React.Component {
                     <p className="welcomeTextSmall">(in this part of the Internet)</p>
                 </div>
                 <SearchEngine getCountryInfo={this.getCountryInfo} clickedCountry={this.state.clickedCountry} clearClickedCountry={this.clearClickedCountry}/>
+                {this.state.loadingFinished ? <Instructions/> : null}
                 {this.state.loadingFinished ? <Map countryToShow={this.state.countryToShow} countryInfoActive={this.state.countryInfoActive} mapClick={this.mapClick}/> : <LoadingScreen checkLoadingStatus={this.checkLoadingStatus}/>}
                 {this.state.infoToDisplay !== "" ? <CountryInfo infoToDisplay={this.state.infoToDisplay}/> : null}
             </div>
