@@ -1,5 +1,4 @@
 .countryInfoWrapper{
-    //border: 2px solid red;
     display: inline-block;
     font-size: 1.5em;
     margin-left: 100px;
@@ -8,25 +7,6 @@
     left: 0;
     
     .countryInfoText{
-        //border: 2px solid red;
-        &.name{
-
-        }
-        &.capital{
-            
-        }
-        &.region{
-            
-        }
-        &.population{
-            
-        }
-        &.currency{
-            
-        }
-        &.language{
-            
-        }
         &.flag{
             width: 100px;
             height: 50px;
